@@ -8,10 +8,10 @@ Please refer to these links below for more information:
 """
 
 from dataclasses import asdict
-
+from modelscope import AutoModelForCausalLM, AutoTokenizer
 import streamlit as st
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
+# from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers.utils import logging
 
 from tools.transformers.interface import GenerationConfig, generate_interactive
