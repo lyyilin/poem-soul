@@ -1,4 +1,4 @@
-# "access_token":"24.56c4287d1f448e7d9c5c842fc63a123e.2592000.1706761961.282335-46236564"
+
 import requests
 class translate():
     def __init__(self):
