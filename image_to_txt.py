@@ -5,10 +5,11 @@ from PIL import Image
 class image_to_txt():
 
   def __init__(self):
-    self.model_path = r"nlpconnect/vit-gpt2-image-captioning"
-    self.model = VisionEncoderDecoderModel.from_pretrained(self.model_path)
-    self.feature_extractor = ViTImageProcessor.from_pretrained(self.model_path)
-    self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
+    # self.model_path = r"nlpconnect/vit-gpt2-image-captioning"
+    self.model = VisionEncoderDecoderModel.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+    self.feature_extractor = ViTImageProcessor.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+    self.tokenizer = AutoTokenizer.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+
 
   def to_txt(self,image):
     # 选择设备
