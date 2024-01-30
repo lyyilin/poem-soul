@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     with gr.Blocks(css='style.css') as demo:
         gr.Markdown(
-            "# <center> \N{fire} 图生文 </center>")
+            "# <center> \N{fire} 诗魂 </center>")
         with gr.Tabs():
             with gr.TabItem('\N{clapper board} 描述图片'):
                 with gr.Column():
