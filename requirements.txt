@@ -1,4 +1,3 @@
-modelscope==1.9.5 
 transformers==4.35.2 
 sentencepiece==0.1.99 
 accelerate==0.24.1
@@ -20,7 +19,7 @@ boto3
 botocore
 torch-scatter
 pyecharts
-
+#modelscope==1.9.5
 #--extra-index-url https://download.pytorch.org/whl/cu117
 #torch==1.13.1+cu117
 #torchvision==0.14.1+cu117
