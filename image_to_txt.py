@@ -32,10 +32,10 @@ from PIL import Image
 class image_to_txt():
 
   def __init__(self):
-    # self.model_path = r"nlpconnect/vit-gpt2-image-captioning"
-    self.model = VisionEncoderDecoderModel.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
-    self.feature_extractor = ViTImageProcessor.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
-    self.tokenizer = AutoTokenizer.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+    # self.model_path = r"./models"
+    self.model = VisionEncoderDecoderModel.from_pretrained(r"./models")
+    self.feature_extractor = ViTImageProcessor.from_pretrained(r"./models")
+    self.tokenizer = AutoTokenizer.from_pretrained(r"./models")
 
 
   def to_txt(self,image):
