@@ -29,13 +29,13 @@
 
 # 正常的加载merged模型
 import torch
-# from modelscope import AutoTokenizer, AutoModelForCausalLM
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from modelscope import AutoTokenizer, AutoModelForCausalLM
+# from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 class TextToPoem(object):
     def __init__(self):
-        self.model_dir = r"HOOKLIN/1.0"
+        self.model_dir = r"HOOK123/poem-soul"
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_dir, device_map="auto", trust_remote_code=True)
         self.model = AutoModelForCausalLM.from_pretrained(self.model_dir, device_map="auto",  trust_remote_code=True, torch_dtype=torch.float16,  offload_folder=r"E:\my_model\merged\temp")
 
