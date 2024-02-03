@@ -1,14 +1,10 @@
+modelscope==1.9.5 
 transformers==4.35.2 
-modelscope
 sentencepiece==0.1.99 
 accelerate==0.24.1
 streamlit==1.25.0
-gradio==4.12.0
-lmdeploy==0.1.0
-requests
 numpy
 tqdm
-pillow
 psutil
 packaging
 pre-commit
@@ -20,8 +16,3 @@ boto3
 botocore
 torch-scatter
 pyecharts
-#modelscope==1.9.5
-#--extra-index-url https://download.pytorch.org/whl/cu117
-#torch==1.13.1+cu117
-#torchvision==0.14.1+cu117
-#torchaudio==0.13.1

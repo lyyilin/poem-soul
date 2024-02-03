@@ -30,7 +30,6 @@
 # 正常的加载merged模型
 import torch
 from modelscope import AutoTokenizer, AutoModelForCausalLM
-# from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 class TextToPoem(object):

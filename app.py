@@ -1,67 +1,119 @@
-import gradio as gr
-from trans import translate
-from PIL import Image
-from image_to_txt import image_to_txt
-from text_to_poem import TextToPoem
+"""
+This script refers to the dialogue example of streamlit, the interactive generation code of chatglm2 and transformers.
+We mainly modified part of the code logic to adapt to the generation of our model.
+Please refer to these links below for more information:
+    1. streamlit chat example: https://docs.streamlit.io/knowledge-base/tutorials/build-conversational-apps
+    2. chatglm2: https://github.com/THUDM/ChatGLM2-6B
+    3. transformers: https://github.com/huggingface/transformers
+"""
+
+from dataclasses import asdict
+
+import streamlit as st
+import torch
+from modelscope import AutoModelForCausalLM, AutoTokenizer
+from transformers.utils import logging
+
+from tools.transformers.interface import GenerationConfig, generate_interactive
+
+logger = logging.get_logger(__name__)
 
 
-
-# 图片描述
-# Image inference
-def get_caption(inputs):
-    inputs = Image.fromarray(inputs)
-    my_class = image_to_txt()
-    my_trans = translate()
-    text = my_class.to_txt(inputs)
-    chinese_reslut = my_trans.english_to_chinese(text[0])  # 百度翻译调用
-    return text[0], chinese_reslut
+def on_btn_click():
+    del st.session_state.messages
 
 
-# internlm生成古诗
-posts = TextToPoem()
-def interlm(outputs, choice):
-    poem = posts.text_to_poem(questions=f"{outputs}")
-    return poem
+@st.cache_resource
+def load_model():
+    model = (
+        AutoModelForCausalLM.from_pretrained("HOOK123/poem-soul", trust_remote_code=True)
+        .to(torch.bfloat16)
+        .cuda()
+    )
+    tokenizer = AutoTokenizer.from_pretrained("HOOK123/poem-soul", trust_remote_code=True)
+    return model, tokenizer
 
 
-# 三个按钮生成不同的格式
-def change_textbox(outputs, choice):
-    if choice == "五言绝句":
-        return interlm(outputs, choice)
+def prepare_generation_config():
+    with st.sidebar:
+        max_length = st.slider("Max Length", min_value=32, max_value=2048, value=2048)
+        top_p = st.slider("Top P", 0.0, 1.0, 0.8, step=0.01)
+        temperature = st.slider("Temperature", 0.0, 1.0, 0.7, step=0.01)
+        st.button("Clear Chat History", on_click=on_btn_click)
 
-    elif choice == "五言律诗":
-        return interlm(outputs, choice)
-    # elif choice == "七言律诗":
-    #     return wenxin(outputs, choice)
+    generation_config = GenerationConfig(max_length=max_length, top_p=top_p, temperature=temperature)
 
-def tts():
-    with gr.Blocks(theme=gr.themes.Soft()) as demo:
-        with gr.Row(equal_height=False):
-            with gr.Column(variant='panel'):
-                inputs = gr.Image(label="需要生成的描述 ")
-                text_button_img = gr.Button("确定上传")
-                outputs_en = gr.Textbox(label='生成后的英文结果为')
-                Englist_output = gr.Textbox(label='生成的中文结果',  show_copy_button=True)
-            text_button_img.click(fn=get_caption, inputs=inputs, outputs=[outputs_en, Englist_output])
-        with gr.Row(equal_height=False):
-            with gr.Row(variant='panel'):
-                user_inputs = gr.Textbox(label="输入您的关键词或复制上述输出结果用以生成您想要的古诗")
-                user_button = gr.Button("确定上传")
-                radio = gr.Radio(["五言绝句", "五言律诗"], label="请选择你想生成古诗的格式")
-                text = gr.Textbox( interactive=True, show_copy_button=True)
-        radio.change(fn=change_textbox, inputs=[user_inputs, radio], outputs=text)
-        user_button.click(fn=interlm, inputs=[user_inputs, radio], outputs=text)
-
-    return demo
+    return generation_config
 
 
-if __name__ == '__main__':
+user_prompt = "<|User|>:{user}\n"
+robot_prompt = "<|Bot|>:{robot}<eoa>\n"
+cur_query_prompt = "<|User|>:{user}<eoh>\n<|Bot|>:"
 
-    with gr.Blocks(css='style.css') as demo:
-        gr.Markdown(
-            "# <center> \N{fire} 诗魂 </center>")
-        with gr.Tabs():
-            with gr.TabItem('\N{clapper board} 描述图片'):
-                with gr.Column():
-                    tts()
-    demo.launch()
+
+def combine_history(prompt):
+    messages = st.session_state.messages
+    total_prompt = "您是一个专业的古诗词专家，根据用户的问题输出对应的古诗词。"
+    for message in messages:
+        cur_content = message["content"]
+        if message["role"] == "user":
+            cur_prompt = user_prompt.replace("{user}", cur_content)
+        elif message["role"] == "robot":
+            cur_prompt = robot_prompt.replace("{robot}", cur_content)
+        else:
+            raise RuntimeError
+        total_prompt += cur_prompt
+    total_prompt = total_prompt + cur_query_prompt.replace("{user}", prompt)
+    return total_prompt
+
+
+def main():
+    # torch.cuda.empty_cache()
+    print("load model begin.")
+    model, tokenizer = load_model()
+    print("load model end.")
+
+    user_avator = "imgs/user.png"
+    robot_avator = "imgs/robot.png"
+
+    st.title("诗魂 -- HOOK ")
+
+    generation_config = prepare_generation_config()
+
+    # Initialize chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    # Display chat messages from history on app rerun
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"], avatar=message.get("avatar")):
+            st.markdown(message["content"])
+
+    # Accept user input
+    if prompt := st.chat_input("What is up?"):
+        # Display user message in chat message container
+        with st.chat_message("user", avatar=user_avator):
+            st.markdown(prompt)
+        real_prompt = combine_history(prompt)
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt, "avatar": user_avator})
+
+        with st.chat_message("robot", avatar=robot_avator):
+            message_placeholder = st.empty()
+            for cur_response in generate_interactive(
+                model=model,
+                tokenizer=tokenizer,
+                prompt=real_prompt,
+                additional_eos_token_id=103028,
+                **asdict(generation_config),
+            ):
+                # Display robot response in chat message container
+                message_placeholder.markdown(cur_response + "▌")
+            message_placeholder.markdown(cur_response)
+        # Add robot response to chat history
+        st.session_state.messages.append({"role": "robot", "content": cur_response, "avatar": robot_avator})
+        torch.cuda.empty_cache()
+
+
+if __name__ == "__main__":
+    main()

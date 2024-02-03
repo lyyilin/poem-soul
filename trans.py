@@ -1,8 +1,8 @@
-
+# "access_token":"24.56c4287d1f448e7d9c5c842fc63a123e.2592000.1706761961.282335-46236564"
 import requests
 class translate():
     def __init__(self):
-        self.token = "24.56c4287d1f448e7d9c5c842fc63a123e.2592000.1706761961.282335-46236565"
+        self.token = "24.56c4287d1f448e7d9c5c842fc63a123e.2592000.1706761961.282335-46236564"
         self.url = 'https://aip.baidubce.com/rpc/2.0/mt/texttrans/v1?access_token=' + self.token
     def english_to_chinese(self, question):
         q = question
