@@ -1,6 +1,28 @@
 # poem-soul
+<!-- PROJECT SHIELDS -->
+<br />
+<!-- PROJECT LOGO -->
+
+
+<p align="center">
+  <a href="[https://github.com/lyyilin/poem-soul]">
+    <img src="imgs/robot.png" alt="Logo" width="20%">
+  </a>
+
+<h3 align="center">诗魂</h3>
+  <p align="center">
+    <br />
+    <a href="[https://github.com/lyyilin/poem-soul]"><strong>探索本项目的文档 »</strong></a>
+    <br />
+    <br />
+    <a href="[https://openxlab.org.cn/apps/detail/HOOK/poem-soul]">查看Demo</a>
+  </p>
+
+</p>
+
 ## 本项目是基于书生·浦语大模型实战营，产出的作品
 **模型名称**：诗魂-古诗生成
+
 **模型概览**：
 
 诗魂是一个基于深度学习的模型，旨在从现代语言中生成具有古诗韵味的文本。
@@ -55,7 +77,19 @@ while True:
 * **数据来源**：清华团队-九歌数据集
 ![数据来源](https://img-blog.csdnimg.cn/direct/c4c2a6dcfff44dfbaecedbf4fe585a0e.png)
 
+## 特别鸣谢
+
+- [辉哥]([https://github.com/sanbuphy](https://github.com/zhanghui-china))
+- [上海人工智能实验室](https://www.shlab.org.cn/)
+- 感谢浦语提供的大量算力！！！
+
 **优势与局限**：
 
 * **优势**：通过用户给出的情景或者意向词能够快速生成具有古诗韵味的文本，为用户提供丰富的创作素材。
 * **局限**：对于特定主题或风格的古诗，可能无法完全模仿其精髓，偶尔会有小bug。
+
+## 组内成员
+- 李一林
+- 邓雅文
+- 邓超
+- Leo
