@@ -41,6 +41,7 @@
 适用于对古诗文化感兴趣的用户，可以帮助他们快速生成具有古诗韵味的文本，用于创作、文学研究、诗歌欣赏等方面。
 
 ## 模型使用 Usage
+**模型地址[https://www.modelscope.cn/models/HOOK123/poem-soul/summary]**
 ```python
 import torch
 from modelscope import AutoTokenizer, AutoModelForCausalLM
