@@ -12,10 +12,10 @@
 <h3 align="center">诗魂</h3>
   <p align="center">
     <br />
-    <a href="[https://github.com/lyyilin/poem-soul]"><strong>探索本项目的文档 »</strong></a>
+    <a href="https://github.com/lyyilin/poem-soul"><strong>探索本项目的文档</strong></a>
     <br />
     <br />
-    <a href="[https://openxlab.org.cn/apps/detail/HOOK/poem-soul]">查看Demo</a>
+    <a href="https://openxlab.org.cn/apps/detail/HOOK/poem-soul">查看Demo</a>
   </p>
 
 </p>
