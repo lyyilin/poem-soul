@@ -5,7 +5,7 @@ from PIL import Image
 class image_to_txt():
 
   def __init__(self):
-    self.model_path = r"nlpconnect/vit-gpt2-image-captioning"
+    self.model_path = r""
     self.model = VisionEncoderDecoderModel.from_pretrained(self.model_path)
     self.feature_extractor = ViTImageProcessor.from_pretrained(self.model_path)
     self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
